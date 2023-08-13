@@ -1,0 +1,83 @@
+<div class="card container-lg">
+  <div class="card-body" style="width: 100%">
+    <h5 class="card-title">Consultar datos</h5>
+
+    <br />
+    <div class="row">
+      <div class="col-4">
+        <label for="category" class="form-label">Categoria:</label>
+        <select
+          #selectCategory
+          (change)='onChangeCategory(selectCategory.value)'
+          name="category"
+          id="category"
+          class="form-select form-select-sm"
+        >
+          <option selected>Seleccione</option>
+          <option *ngFor="let category of listOfCategories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label for="station" class="form-label">Estación:</label>
+        <select 
+         #selectStation
+         (change)='onChangeStation(selectStation.value)'
+        name="station" id="station" class="form-select form-select-sm">
+          <option selected>Seleccione</option>
+          <option *ngFor="let station of listOfStations" [value]="station">
+            {{ station }}
+          </option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label for="date" class="form-label">Fecha:</label>
+        <input
+          name="date"
+          id="date"
+          class="form-control"
+          placeholder="Fecha"
+          type="date"
+          (change)="onChangeDate($event)"
+        />
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="table-responsive mt-3" *ngIf="isLoadData == true">
+        <label for="tabledata" class="form-label">Datos:</label>
+        <table class="table table-bordered" id="tabledata">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Fecha</th>
+              <th>Categoria</th>
+              <th>Estación</th>
+              <th>Sentido</th>
+              <th>Hora</th>
+              <th>Cantidad</th>
+              <th>Valor tabulado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listOfData | slice:pageFrom:pageTo let i =index">
+              <td>{{ calculateIndex(i)}}</td>
+              <td>{{ item?.date }}</td>
+              <td>{{ item?.category }}</td>
+              <td>{{ item?.station }}</td>
+              <td>{{ item?.direction }}</td>
+              <td>{{ item?.hour }}</td>
+              <td>{{ item?.quantity }}</td>
+              <td>{{ item?.tabulatedValue | number  }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator [length]="listOfData.length"
+              [pageSize]="pageSize"
+              (page)="changePage($event)">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
